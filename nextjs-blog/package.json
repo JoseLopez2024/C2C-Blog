@@ -7,10 +7,14 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "grey-matter": "^0.0.0",
+    "mongodb": "^6.16.0",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1"
   },
   "engines": {
     "node": ">=18"
