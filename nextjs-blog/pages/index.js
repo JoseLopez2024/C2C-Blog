@@ -4,8 +4,9 @@ import utilStyles from '../styles/utils.module.css';
 import { getSortedPostsData } from '../lib/posts';
 import Link from 'next/link';
 import Date from '../components/date';
+import { getServerSideProps } from '../mongodb';
 
-export default function Home({ allPostsData }) {
+export default function Home({ allPostsData, allserverData }) {
   return (
     <Layout home>
       <Head>
@@ -32,15 +33,45 @@ export default function Home({ allPostsData }) {
           ))}
         </ul>
       </section>
+      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>Server Data</h2>
+        <ul className={utilStyles.list}>
+          {allserverData.map(({ title, date, body }, index) => (
+            <li className={utilStyles.listItem} key={index}>
+              <h3>{title}</h3>
+              <small>{date}</small>
+              <p>{body}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>Cluster Blog</h2>
+        <ul className={utilStyles.list}>
+          {allserverData.map(({ title, date, _id }, index) => (
+            <li className={utilStyles.listItem} key={index}>
+            <Link href={`/posts/mdb/${_id}`}>{title}</Link>
+              <br />
+              <small className={utilStyles.lightText}>
+                {date}
+              </small>
+            </li>
+          ))}
+        </ul>
+      </section>
     </Layout>
   );
 }
 
+
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
+  const {props} = await getServerSideProps();
   return {
     props: {
       allPostsData,
+      allserverData: props.allserverData || []
     },
   };
 }
+
